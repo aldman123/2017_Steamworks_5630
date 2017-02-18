@@ -20,16 +20,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	{	//Variable declarations 
+		//Variable declarations 
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	CANTalon leftSRX, rightSRX;
-	Talon rightMotor, leftMotor;
+	Talon rightMotor, leftMotor, shooter1, shooter2;
 	Joystick joystick;
 	double rightX, rightY, leftTrigger, rightTrigger, leftX, leftY;
-}
+	boolean buttonA, buttonB, buttonX, buttonY, buttonRB, buttonLB, buttonLeftStickTrigger, buttonRightStickTrigger, buttonBack, buttonStart;
+	boolean buttonALast, buttonBLast, buttonXLast, buttonYLast, buttonRBLast, buttonLBLast, buttonLeftStickTriggerLast, buttonRightStickTriggerLast, buttonBackLast, buttonStartLast;
+	boolean shooterToggle;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -42,6 +44,8 @@ public class Robot extends IterativeRobot {
 		leftSRX = new CANTalon(2);
 		rightSRX = new CANTalon(3);
 		leftMotor = new Talon(0);
+		shooter1 = new Talon(1);
+		shooter2 = new Talon(2);
 		rightMotor = new Talon(4);
 		joystick = new Joystick(0);
 		leftSRX.setInverted(true);
@@ -90,6 +94,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit(){
 		rightSRX.changeControlMode(TalonControlMode.PercentVbus); //Changes to % Voltage
 		leftSRX.changeControlMode(TalonControlMode.PercentVbus);
+		shooterToggle = false;
 	}
 	@Override
 	public void teleopPeriodic() {
@@ -100,11 +105,37 @@ public class Robot extends IterativeRobot {
 		rightY = joystick.getRawAxis(5);
 		leftTrigger = joystick.getRawAxis(2);
 		rightTrigger = joystick.getRawAxis(3);
+		buttonA = joystick.getRawButton(1);
+		buttonB = joystick.getRawButton(2);
+		buttonX = joystick.getRawButton(3);
+		buttonY = joystick.getRawButton(4);
+		buttonLB = joystick.getRawButton(5);
+		buttonRB = joystick.getRawButton(6);
+		buttonBack = joystick.getRawButton(7);
+		buttonStart = joystick.getRawButton(8);
+		buttonLeftStickTrigger = joystick.getRawButton(9);
+		buttonRightStickTrigger = joystick.getRawButton(10);
 		
 		rightSRX.set(rightY/2);
 		rightMotor.set(rightY/2);
 		leftSRX.set(leftY/2);
 		leftMotor.set(leftY/2);
+		
+		if(buttonA != buttonALast && buttonA){
+			shooterToggle = !shooterToggle;
+		}
+		
+		
+		buttonALast = joystick.getRawButton(1);
+		buttonBLast = joystick.getRawButton(2);
+		buttonXLast = joystick.getRawButton(3);
+		buttonYLast = joystick.getRawButton(4);
+		buttonLBLast = joystick.getRawButton(5);
+		buttonRBLast = joystick.getRawButton(6);
+		buttonBackLast = joystick.getRawButton(7);
+		buttonStartLast = joystick.getRawButton(8);
+		buttonLeftStickTriggerLast = joystick.getRawButton(9);
+		buttonRightStickTriggerLast = joystick.getRawButton(10);
 	}
 
 	/**
