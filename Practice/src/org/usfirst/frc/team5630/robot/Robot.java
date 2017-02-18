@@ -97,15 +97,14 @@ public class Robot extends IterativeRobot {
 
 		leftX = joystick.getRawAxis(0);
 		leftY = joystick.getRawAxis(1);
-		leftTrigger = joystick.getRawAxis(2);
-		rightTrigger = joystick.getRawAxis(3);
 		rightX = joystick.getRawAxis(4);
 		rightY = joystick.getRawAxis(5);
+		leftTrigger = joystick.getRawAxis(2);
+		rightTrigger = joystick.getRawAxis(3);
+		
 		rightSRX.set(rightY/2);
 		rightMotor.set(rightY/2);
 		leftSRX.set(leftY/2);
-		joystick.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
-		joystick.setRumble(GenericHID.RumbleType.kRightRumble, 1);
 		leftMotor.set(leftY/2);
 	}
 
