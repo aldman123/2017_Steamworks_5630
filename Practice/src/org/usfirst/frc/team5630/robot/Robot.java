@@ -24,10 +24,8 @@ public class Robot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	CANTalon leftSRX;
-	CANTalon rightSRX;
-	Talon rightMotor;
-	Talon leftMotor;
+	CANTalon leftSRX, rightSRX;
+	Talon rightMotor, leftMotor;
 	Joystick joystick;
 	double rightX, rightY, leftTrigger, rightTrigger, leftX, leftY;
 	/**
@@ -44,7 +42,6 @@ public class Robot extends IterativeRobot {
 		leftMotor = new Talon(0);
 		rightMotor = new Talon(4);
 		joystick = new Joystick(0);
-		leftSRX.configPeakOutputVoltage(13.0f, -13.0f);
 		leftSRX.setInverted(true);
 		leftMotor.setInverted(true);
 		
@@ -89,7 +86,7 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopInit(){
-		rightSRX.changeControlMode(TalonControlMode.PercentVbus);
+		rightSRX.changeControlMode(TalonControlMode.PercentVbus); //Changes to % Voltage
 		leftSRX.changeControlMode(TalonControlMode.PercentVbus);
 	}
 	@Override
