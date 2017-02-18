@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	{	//Variable declarations 
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
@@ -28,6 +29,7 @@ public class Robot extends IterativeRobot {
 	Talon rightMotor, leftMotor;
 	Joystick joystick;
 	double rightX, rightY, leftTrigger, rightTrigger, leftX, leftY;
+}
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
