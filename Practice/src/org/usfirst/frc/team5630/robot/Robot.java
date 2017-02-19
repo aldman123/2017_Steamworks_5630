@@ -50,7 +50,8 @@ public class Robot extends IterativeRobot {
 		joystick = new Joystick(0);
 		leftSRX.setInverted(true);
 		leftMotor.setInverted(true);
-		
+		shooter1.setInverted(true);
+		shooter2.setInverted(true);
 	}
 
 	/**
@@ -95,6 +96,7 @@ public class Robot extends IterativeRobot {
 		rightSRX.changeControlMode(TalonControlMode.PercentVbus); //Changes to % Voltage
 		leftSRX.changeControlMode(TalonControlMode.PercentVbus);
 		shooterToggle = false;
+		shooterToggle = false;
 	}
 	@Override
 	public void teleopPeriodic() {
@@ -120,11 +122,19 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(rightY/2);
 		leftSRX.set(leftY/2);
 		leftMotor.set(leftY/2);
-		
 		if(buttonA != buttonALast && buttonA){
 			shooterToggle = !shooterToggle;
+			System.out.println("ShooterToggle: " + shooterToggle);
 		}
+
 		
+		if(shooterToggle){
+			shooter1.set(0.4);
+			shooter2.set(0.4);
+		}else{
+			shooter1.set(0);
+			shooter2.set(0);
+		}
 		
 		buttonALast = joystick.getRawButton(1);
 		buttonBLast = joystick.getRawButton(2);
