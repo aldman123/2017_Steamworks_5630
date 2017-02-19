@@ -122,7 +122,7 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(rightY/2);
 		leftSRX.set(leftY/2);
 		leftMotor.set(leftY/2);
-		if(buttonA != buttonALast && buttonA){
+		if(buttonA != buttonALast && buttonA){//Checks if button A was clicked
 			shooterToggle = !shooterToggle;
 			System.out.println("ShooterToggle: " + shooterToggle);
 		}
