@@ -29,8 +29,8 @@ public class Robot extends IterativeRobot {
 	Talon rightMotor, leftMotor, shooter1, shooter2;
 	Joystick joystick;
 	double rightX, rightY, leftTrigger, rightTrigger, leftX, leftY;
-	boolean buttonA, buttonB, buttonX, buttonY, buttonRB, buttonLB, buttonLeftStickTrigger, buttonRightStickTrigger, buttonBack, buttonStart;
-	boolean buttonALast, buttonBLast, buttonXLast, buttonYLast, buttonRBLast, buttonLBLast, buttonLeftStickTriggerLast, buttonRightStickTriggerLast, buttonBackLast, buttonStartLast;
+	boolean buttonA, buttonB, buttonX, buttonY, buttonRB, buttonLB, buttonLeftStickClick, buttonRightStickClick, buttonBack, buttonStart;
+	boolean buttonALast, buttonBLast, buttonXLast, buttonYLast, buttonRBLast, buttonLBLast, buttonLeftStickClickLast, buttonRightStickClickLast, buttonBackLast, buttonStartLast;
 	boolean shooterToggle;
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -115,8 +115,8 @@ public class Robot extends IterativeRobot {
 		buttonRB = joystick.getRawButton(6);
 		buttonBack = joystick.getRawButton(7);
 		buttonStart = joystick.getRawButton(8);
-		buttonLeftStickTrigger = joystick.getRawButton(9);
-		buttonRightStickTrigger = joystick.getRawButton(10);
+		buttonLeftStickClick = joystick.getRawButton(9);
+		buttonRightStickClick = joystick.getRawButton(10);
 		
 		rightSRX.set(rightY/2);
 		rightMotor.set(rightY/2);
@@ -144,8 +144,8 @@ public class Robot extends IterativeRobot {
 		buttonRBLast = joystick.getRawButton(6);
 		buttonBackLast = joystick.getRawButton(7);
 		buttonStartLast = joystick.getRawButton(8);
-		buttonLeftStickTriggerLast = joystick.getRawButton(9);
-		buttonRightStickTriggerLast = joystick.getRawButton(10);
+		buttonLeftStickClickLast = joystick.getRawButton(9);
+		buttonRightStickClickLast = joystick.getRawButton(10);
 	}
 
 	/**
