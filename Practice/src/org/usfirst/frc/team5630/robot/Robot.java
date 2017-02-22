@@ -97,6 +97,7 @@ public class Robot extends IterativeRobot {
 		leftSRX.changeControlMode(TalonControlMode.PercentVbus);
 		shooterToggle = false;
 		shooterToggle = false;
+		robotDrive = new RobotDrive
 	}
 	@Override
 	public void teleopPeriodic() {
