@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	CANTalon leftSRX, rightSRX, shooter1, shooter2;
-	Talon rightMotor, leftMotor, intakeMotor, indexMotor, climberMotor;
+	Talon rightMotor, leftMotor, intakeMotor, indexMotor, climberMotor, tempLeftSRX;
 	Joystick joystick;
 	double rightX, rightY, leftTrigger, rightTrigger, leftX, leftY;
 	boolean buttonA, buttonB, buttonX, buttonY, buttonRB, buttonLB, buttonLeftStickClick, buttonRightStickClick,
@@ -50,7 +50,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto choices", chooser);
 		shooter1 = new CANTalon(1);
 		shooter2 = new CANTalon(2);
-		leftSRX = new CANTalon(3);
+		//leftSRX = new CANTalon(3);
+		tempLeftSRX = new Talon(4);
 		leftMotor = new Talon(2);
 		rightSRX = new CANTalon(4);
 		rightMotor = new Talon(0);
@@ -62,7 +63,8 @@ public class Robot extends IterativeRobot {
 		// intakeMotor.setInverted(true);
 		shooter1.setInverted(true);
 		shooter2.setInverted(true);
-		leftSRX.setInverted(false);
+		//leftSRX.setInverted(false);
+		tempLeftSRX.setInverted(false;)
 		leftMotor.setInverted(false);
 		rightSRX.setInverted(false);
 		rightMotor.setInverted(false);
@@ -119,7 +121,8 @@ public class Robot extends IterativeRobot {
 		shooterToggle = false;
 		shooter2.changeControlMode(TalonControlMode.Follower);
 		shooter2.set(1);
-		robotDrive = new RobotDrive(leftSRX, leftMotor, rightSRX, rightMotor);// front
+		robotDrive = new RobotDrive(tempLeftSRX, leftMotor, rightSRX, rightMotor);
+		//robotDrive = new RobotDrive(leftSRX, leftMotor, rightSRX, rightMotor);// front
 																				// left,
 																				// rear
 																				// left,
