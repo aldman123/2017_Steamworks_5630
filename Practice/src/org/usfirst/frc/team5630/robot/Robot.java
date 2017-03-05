@@ -2,8 +2,10 @@ package org.usfirst.frc.team5630.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 
 import com.ctre.CANTalon;
@@ -20,18 +22,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-		//Variable declarations 
+	// Variable declarations
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	CANTalon leftSRX, rightSRX;
-	Talon rightMotor, leftMotor, shooter1, shooter2;
+	CANTalon leftSRX, rightSRX, shooter1, shooter2;
+	Talon rightMotor, leftMotor, intakeMotor, indexMotor, climberMotor;
 	Joystick joystick;
 	double rightX, rightY, leftTrigger, rightTrigger, leftX, leftY;
-	boolean buttonA, buttonB, buttonX, buttonY, buttonRB, buttonLB, buttonLeftStickClick, buttonRightStickClick, buttonBack, buttonStart;
-	boolean buttonALast, buttonBLast, buttonXLast, buttonYLast, buttonRBLast, buttonLBLast, buttonLeftStickClickLast, buttonRightStickClickLast, buttonBackLast, buttonStartLast;
+	boolean buttonA, buttonB, buttonX, buttonY, buttonRB, buttonLB, buttonLeftStickClick, buttonRightStickClick,
+			buttonBack, buttonStart;
+	boolean buttonALast, buttonBLast, buttonXLast, buttonYLast, buttonRBLast, buttonLBLast, buttonLeftStickClickLast,
+			buttonRightStickClickLast, buttonBackLast, buttonStartLast;
 	boolean shooterToggle;
+	int numberOfPWMisZeroinARow;
+	RobotDrive robotDrive;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -41,17 +48,30 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		leftSRX = new CANTalon(2);
-		rightSRX = new CANTalon(3);
-		leftMotor = new Talon(0);
-		shooter1 = new Talon(1);
-		shooter2 = new Talon(2);
-		rightMotor = new Talon(4);
+		shooter1 = new CANTalon(1);
+		shooter2 = new CANTalon(2);
+		leftSRX = new CANTalon(3);
+		leftMotor = new Talon(2);
+		rightSRX = new CANTalon(4);
+		rightMotor = new Talon(0);
+		indexMotor = new Talon(1);
+		// climberMotor = new Talon(2);
+		intakeMotor = new Talon(3);
+
 		joystick = new Joystick(0);
-		leftSRX.setInverted(true);
-		leftMotor.setInverted(true);
+		// intakeMotor.setInverted(true);
 		shooter1.setInverted(true);
 		shooter2.setInverted(true);
+		leftSRX.setInverted(false);
+		leftMotor.setInverted(false);
+		rightSRX.setInverted(false);
+		rightMotor.setInverted(false);
+		rightSRX.configPeakOutputVoltage(12.0f, -12.0f);
+		leftSRX.configPeakOutputVoltage(12.0f, -12.0f);
+		numberOfPWMisZeroinARow = 0;
+
+		// shooter1.setInverted(false);
+		// shooter2.setInverted(false);
 	}
 
 	/**
@@ -92,16 +112,26 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
-	public void teleopInit(){
-		rightSRX.changeControlMode(TalonControlMode.PercentVbus); //Changes to % Voltage
+	public void teleopInit() {
+		rightSRX.changeControlMode(TalonControlMode.PercentVbus); // Changes to
+																	// % Voltage
 		leftSRX.changeControlMode(TalonControlMode.PercentVbus);
 		shooterToggle = false;
-		shooterToggle = false;
-		robotDrive = new RobotDrive
+		shooter2.changeControlMode(TalonControlMode.Follower);
+		shooter2.set(1);
+		robotDrive = new RobotDrive(leftSRX, leftMotor, rightSRX, rightMotor);// front
+																				// left,
+																				// rear
+																				// left,
+																				// front
+																				// right,
+																				// rear
+																				// right
+
 	}
+
 	@Override
 	public void teleopPeriodic() {
-
 		leftX = joystick.getRawAxis(0);
 		leftY = joystick.getRawAxis(1);
 		rightX = joystick.getRawAxis(4);
@@ -118,25 +148,36 @@ public class Robot extends IterativeRobot {
 		buttonStart = joystick.getRawButton(8);
 		buttonLeftStickClick = joystick.getRawButton(9);
 		buttonRightStickClick = joystick.getRawButton(10);
-		
-		rightSRX.set(rightY/2);
-		rightMotor.set(rightY/2);
-		leftSRX.set(leftY/2);
-		leftMotor.set(leftY/2);
-		if(buttonA != buttonALast && buttonA){//Checks if button A was clicked
-			shooterToggle = !shooterToggle;
-			System.out.println("ShooterToggle: " + shooterToggle);
-		}
+		/*
+		 * if(buttonA != buttonALast && buttonA){//Checks if button A was
+		 * clicked shooterToggle = !shooterToggle;
+		 * System.out.println("ShooterToggle: " + shooterToggle); }
+		 */
 
-		
-		if(shooterToggle){
-			shooter1.set(0.4);
-			shooter2.set(0.4);
-		}else{
-			shooter1.set(0);
-			shooter2.set(0);
-		}
-		
+		/*
+		 * if(buttonRB = true){//Checks if button A was clicked
+		 * indexMotor.set(1); }
+		 */
+
+		// intakeMotor.set(rightTrigger);//Runs intake with right trigger speed
+
+		/*
+		 * if(shooterToggle){ shooter1.set(0.4); shooter2.set(0.4); }else{
+		 * shooter1.set(0); shoot
+		 */
+
+		// climberMotor.set(leftTrigger);
+		robotDrive.arcadeDrive(-leftY, rightX);
+		if (buttonStart)
+			shooter1.set(rightTrigger);
+		// leftMotor.set(leftSRX.getOutputVoltage()/leftSRX.getBusVoltage());
+		// rightMotor.set(rightSRX.getOutputVoltage()/rightSRX.getBusVoltage());
+		// System.out.println("Output of left SRX: " +
+		// leftSRX.getOutputVoltage() + "\t Output of right SRX: " +
+		// rightSRX.getOutputVoltage());
+		// System.out.println("PWM of left: " +
+		// leftSRX.getOutputVoltage()/leftSRX.getBusVoltage() + "PWM of right: "
+		// + rightSRX.getOutputVoltage()/rightSRX.getBusVoltage());
 		buttonALast = joystick.getRawButton(1);
 		buttonBLast = joystick.getRawButton(2);
 		buttonXLast = joystick.getRawButton(3);
@@ -147,6 +188,7 @@ public class Robot extends IterativeRobot {
 		buttonStartLast = joystick.getRawButton(8);
 		buttonLeftStickClickLast = joystick.getRawButton(9);
 		buttonRightStickClickLast = joystick.getRawButton(10);
+
 	}
 
 	/**
@@ -157,4 +199,3 @@ public class Robot extends IterativeRobot {
 
 	}
 }
-
